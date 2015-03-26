@@ -297,7 +297,8 @@ else:
         try:
             route = gmaps.distance_matrix(origins=[waypoint1],
                                           destinations=[waypoint2],
-                                          mode="driving",
+                                          mode="driving", # Change to "walking" for walking directions,
+                                                          # "bicycling" for biking directions, etc.
                                           language="English",
                                           units="metric")
 
