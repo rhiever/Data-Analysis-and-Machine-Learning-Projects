@@ -146,7 +146,8 @@ def compute_fitness(solution):
         waypoint1 = solution[index - 1]
         waypoint2 = solution[index]
         solution_fitness += waypoint_distances[frozenset([waypoint1, waypoint2])]
-        
+    # Adds distance from last to first waypoints to close tour
+    solution_fitness += waypoint_distances[frozenset([solution[len(solution)-1], solution[0]])]  
     return solution_fitness
 
 def generate_random_agent():
