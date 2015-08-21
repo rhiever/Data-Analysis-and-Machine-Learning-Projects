@@ -12,6 +12,8 @@ For example, if you want to view the notebook in the `wheres-waldo-path-optimiza
 
 ##License
 
+© 2015 Randal S. Olson
+
 ###Instructional Material
 
 All instructional material in this repository is made available under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/). The following is a human-readable summary of (and not a substitute for) the [full legal text of the CC BY 4.0 license](https://creativecommons.org/licenses/by/4.0/legalcode).
