@@ -1,19 +1,19 @@
 digraph Tree {
-0 [label="X[3] <= 0.8000\ngini = 0.666636637989\nsamples = 149", shape="box"] ;
+0 [label="X[2] <= 2.4500\ngini = 0.666636637989\nsamples = 149", shape="box"] ;
 1 [label="gini = 0.0000\nsamples = 49\nvalue = [ 49.   0.   0.]", shape="box"] ;
 0 -> 1 ;
-2 [label="X[2] <= 4.7500\ngini = 0.5\nsamples = 100", shape="box"] ;
+2 [label="X[3] <= 1.7500\ngini = 0.5\nsamples = 100", shape="box"] ;
 0 -> 2 ;
-3 [label="X[3] <= 1.6500\ngini = 0.0434567901235\nsamples = 45", shape="box"] ;
+3 [label="X[2] <= 4.9500\ngini = 0.168038408779\nsamples = 54", shape="box"] ;
 2 -> 3 ;
-4 [label="gini = 0.0000\nsamples = 44\nvalue = [  0.  44.   0.]", shape="box"] ;
+4 [label="gini = 0.0408\nsamples = 48\nvalue = [  0.  47.   1.]", shape="box"] ;
 3 -> 4 ;
-5 [label="gini = 0.0000\nsamples = 1\nvalue = [ 0.  0.  1.]", shape="box"] ;
+5 [label="gini = 0.4444\nsamples = 6\nvalue = [ 0.  2.  4.]", shape="box"] ;
 3 -> 5 ;
-6 [label="X[2] <= 5.0500\ngini = 0.194380165289\nsamples = 55", shape="box"] ;
+6 [label="X[2] <= 4.8500\ngini = 0.0425330812854\nsamples = 46", shape="box"] ;
 2 -> 6 ;
-7 [label="gini = 0.4734\nsamples = 13\nvalue = [ 0.  5.  8.]", shape="box"] ;
+7 [label="gini = 0.4444\nsamples = 3\nvalue = [ 0.  1.  2.]", shape="box"] ;
 6 -> 7 ;
-8 [label="gini = 0.0465\nsamples = 42\nvalue = [  0.   1.  41.]", shape="box"] ;
+8 [label="gini = 0.0000\nsamples = 43\nvalue = [  0.   0.  43.]", shape="box"] ;
 6 -> 8 ;
 }
