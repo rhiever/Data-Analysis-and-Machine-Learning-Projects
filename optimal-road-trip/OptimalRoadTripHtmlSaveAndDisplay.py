@@ -80,52 +80,119 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=1):
     optimal_route = list(optimal_route)
     optimal_route += [optimal_route[0]]
 
-
-    Page_1 = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="initial-scale=1.0, user-scalable=no"><meta name="description" content="Randy Olson uses machine learning to find the optimal road trip across the U.S."><meta name="author" content="Randal S. Olson"><title>The optimal road trip across the U.S. according to machine learning</title><style>html, body, #map-canvas {height: 100%;margin: 0px;padding: 0px}#panel {position: absolute;top: 5px;left: 50%;margin-left: -180px;z-index: 5;background-color: #fff;padding: 10px;border: 1px solid #999;}</style><script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script><script>var directionsDisplay1, directionsDisplay2;var directionsDisplay3, directionsDisplay4;var directionsDisplay5, directionsDisplay6;var markerOptions = {icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"};var directionsDisplayOptions = {preserveViewport: true,markerOptions: markerOptions};var directionsService = new google.maps.DirectionsService();var map;function initialize() {var center = new google.maps.LatLng(39, -96);var mapOptions = {zoom: 5,center: center};'
-    Page_2 = "map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);directionsDisplay1.setMap(map);directionsDisplay2.setMap(map);directionsDisplay3.setMap(map);directionsDisplay4.setMap(map);directionsDisplay5.setMap(map);directionsDisplay6.setMap(map);}function calcRoute(start, end, routes) {switch (start) { "
-    Page_3 = "}var waypts = [];for (var i = 0; i < routes.length; i++) {waypts.push({location:routes[i],stopover:true});}var request = {origin: start,destination: end,waypoints: waypts,optimizeWaypoints: false,travelMode: google.maps.TravelMode.DRIVING};directionsService.route(request, function(response, status) {if (status == google.maps.DirectionsStatus.OK) {switch (start) { "
-    Page_4 = "}}});}google.maps.event.addDomListener(window, 'load', initialize); "
-    Page_5 = '</script></head><body><div id="map-canvas"></div></body> '
-
-    subset = 0
-    subsetCounter = 0
-    StatementC1 = ''
-    StatementC2 = ''
-    StatementCalcRoutes = ''
-
-    while subset < len(optimal_route):
-        subsetCounter += 1
-
-        waypoint_subset = optimal_route[subset:subset + 10]
-        output = "calcRoute(\"%s\", \"%s\", [" % (waypoint_subset[0], waypoint_subset[-1])
-        StatementC1 = StatementC1 +  ' case "' + waypoint_subset[0] + '": directionsDisplay' + str(subsetCounter) + ' = new google.maps.DirectionsRenderer(directionsDisplayOptions); break; '
-        StatementC2 = StatementC2 +  ' case "' + waypoint_subset[0] + '": directionsDisplay' + str(subsetCounter) + '.setDirections(response); break; '
-
-        for waypoint in waypoint_subset[1:-1]:
-            output += "\"%s\", " % (waypoint)
+    Page_1 = """
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta name="description" content="Randy Olson uses machine learning to find the optimal road trip across the U.S.">
+        <meta name="author" content="Randal S. Olson">
         
-        if len(waypoint_subset[1:-1]) > 0:
-            output = output[:-2]
-        
-        output += "]);"
-        StatementCalcRoutes = StatementCalcRoutes + ' ' + output
-        #print(output)
-        #print("")
-        subset += 9
+        <title>The optimal road trip across the U.S. according to machine learning</title>
+        <style>
+          html, body, #map-canvas {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+          }
+          #panel {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            margin-left: -180px;
+            z-index: 5;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #999;
+          }
+        </style>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+        <script>
+            var routes_list = []
+            var markerOptions = {icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"};
+            var directionsDisplayOptions = {preserveViewport: true,
+                                            markerOptions: markerOptions};
+            var directionsService = new google.maps.DirectionsService();
+            var map;
 
+            function initialize() {
+              var center = new google.maps.LatLng(39, -96);
+              var mapOptions = {
+                zoom: 5,
+                center: center
+              };
+              map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+              for (i=0; i<routes_list.length; i++) {
+                routes_list[i].setMap(map); 
+              }
+            }
+
+            function calcRoute(start, end, routes) {
+              
+              var directionsDisplay = new google.maps.DirectionsRenderer(directionsDisplayOptions);
+
+              var waypts = [];
+              for (var i = 0; i < routes.length; i++) {
+                waypts.push({
+                  location:routes[i],
+                  stopover:true});
+                }
+              
+              var request = {
+                  origin: start,
+                  destination: end,
+                  waypoints: waypts,
+                  optimizeWaypoints: false,
+                  travelMode: google.maps.TravelMode.DRIVING
+              };
+
+              directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);      
+                }
+              });
+
+              routes_list.push(directionsDisplay);
+            }
+
+            function createRoutes(route) {
+                // Google's free map API is limited to 10 waypoints so need to break into batches
+                route.push(route[0]);
+                var subset = 0;
+                while (subset < route.length) {
+                    var waypointSubset = route.slice(subset, subset + 10);
+
+                    var startPoint = waypointSubset[0];
+                    var midPoints = waypointSubset.slice(1, waypointSubset.length - 1);
+                    var endPoint = waypointSubset[waypointSubset.length - 1];
+
+                    calcRoute(startPoint, endPoint, midPoints);
+
+                    subset += 9;
+                }
+            }
+    """
+    Page_2 = """
+            
+            createRoutes(optimal_route);
+
+            google.maps.event.addDomListener(window, 'load', initialize);
+
+        </script>
+      </head>
+      <body>
+        <div id="map-canvas"></div>
+      </body>
+    </html>
+    """
 
     #write the output to file    
     localoutput_file = output_file.replace('.html', '_' + str(distance) + '.html')
-    fs = open(localoutput_file, 'w')
-    fs.write(Page_1)
-    fs.write(Page_2)
-    fs.write(StatementC1)
-    fs.write(Page_3)
-    fs.write(StatementC2)
-    fs.write(Page_4)
-    fs.write(StatementCalcRoutes)
-    fs.write(Page_5)
-    fs.close()
+    with open(localoutput_file, 'w') as fs:
+        fs.write(Page_1)
+        fs.write("\t\t\toptimal_route = {0}".format(str(optimal_route)))
+        fs.write(Page_2)
     
     #Show the result
     if display ==1:
@@ -267,73 +334,73 @@ def run_genetic_algorithm(generations=5000, population_size=100):
     return current_best_genome
 
 
+if __name__ == '__main__':
+    # if this file exists, read the data stored in it - if not then collect data by asking google
+    print "Begin finding shortest route"
+    file_path = waypoints_file
+    if os.path.exists(file_path):
+        print "Waypoints exist"
+        #file exists used saved results
+        waypoint_distances = {}
+        waypoint_durations = {}
+        all_waypoints = set()
 
-# if this file exists, read the data stored in it - if not then collect data by asking google
-print "Begin finding shortest route"
-file_path = waypoints_file
-if os.path.exists(file_path):
-    print "Waypoints exist"
-    #file exists used saved results
-    waypoint_distances = {}
-    waypoint_durations = {}
-    all_waypoints = set()
+        waypoint_data = pd.read_csv(file_path, sep="\t")
 
-    waypoint_data = pd.read_csv(file_path, sep="\t")
+        for i, row in waypoint_data.iterrows():
+            waypoint_distances[frozenset([row.waypoint1, row.waypoint2])] = row.distance_m
+            waypoint_durations[frozenset([row.waypoint1, row.waypoint2])] = row.duration_s
+            all_waypoints.update([row.waypoint1, row.waypoint2])
 
-    for i, row in waypoint_data.iterrows():
-        waypoint_distances[frozenset([row.waypoint1, row.waypoint2])] = row.distance_m
-        waypoint_durations[frozenset([row.waypoint1, row.waypoint2])] = row.duration_s
-        all_waypoints.update([row.waypoint1, row.waypoint2])
-
-else:
-    #file does not exist - compute results       
-    print "Collecting Waypoints"
-    waypoint_distances = {}
-    waypoint_durations = {}
-
-
-    gmaps = googlemaps.Client(GOOGLE_MAPS_API_KEY)
-    for (waypoint1, waypoint2) in combinations(all_waypoints, 2):
-        try:
-            route = gmaps.distance_matrix(origins=[waypoint1],
-                                          destinations=[waypoint2],
-                                          mode="driving", # Change to "walking" for walking directions,
-                                                          # "bicycling" for biking directions, etc.
-                                          language="English",
-                                          units="metric")
-
-            # "distance" is in meters
-            distance = route["rows"][0]["elements"][0]["distance"]["value"]
-
-            # "duration" is in seconds
-            duration = route["rows"][0]["elements"][0]["duration"]["value"]
-
-            waypoint_distances[frozenset([waypoint1, waypoint2])] = distance
-            waypoint_durations[frozenset([waypoint1, waypoint2])] = duration
-    
-        except Exception as e:
-            print("Error with finding the route between %s and %s." % (waypoint1, waypoint2))
-    
-    print "Saving Waypoints"
-    with open(waypoints_file, "wb") as out_file:
-        out_file.write("\t".join(["waypoint1",
-                                  "waypoint2",
-                                  "distance_m",
-                                  "duration_s"]))
-    
-        for (waypoint1, waypoint2) in waypoint_distances.keys():
-            out_file.write("\n" +
-                           "\t".join([waypoint1,
-                                      waypoint2,
-                                      str(waypoint_distances[frozenset([waypoint1, waypoint2])]),
-                                      str(waypoint_durations[frozenset([waypoint1, waypoint2])])]))
+    else:
+        #file does not exist - compute results       
+        print "Collecting Waypoints"
+        waypoint_distances = {}
+        waypoint_durations = {}
 
 
-#optimal_route = run_genetic_algorithm(generations=100, population_size=100)
-print "Search for optimal route"
-optimal_route = run_genetic_algorithm(generations=thisRunGenerations, population_size=thisRunPopulation_size)
+        gmaps = googlemaps.Client(GOOGLE_MAPS_API_KEY)
+        for (waypoint1, waypoint2) in combinations(all_waypoints, 2):
+            try:
+                route = gmaps.distance_matrix(origins=[waypoint1],
+                                              destinations=[waypoint2],
+                                              mode="driving", # Change to "walking" for walking directions,
+                                                              # "bicycling" for biking directions, etc.
+                                              language="English",
+                                              units="metric")
 
-#this is probably redundant now that the files are created in run_genetic_algorithm but leaving it active to ensure 
-#the final result is not lost
-CreateOptimalRouteHtmlFile(optimal_route, 1)
+                # "distance" is in meters
+                distance = route["rows"][0]["elements"][0]["distance"]["value"]
+
+                # "duration" is in seconds
+                duration = route["rows"][0]["elements"][0]["duration"]["value"]
+
+                waypoint_distances[frozenset([waypoint1, waypoint2])] = distance
+                waypoint_durations[frozenset([waypoint1, waypoint2])] = duration
+        
+            except Exception as e:
+                print("Error with finding the route between %s and %s." % (waypoint1, waypoint2))
+        
+        print "Saving Waypoints"
+        with open(waypoints_file, "wb") as out_file:
+            out_file.write("\t".join(["waypoint1",
+                                      "waypoint2",
+                                      "distance_m",
+                                      "duration_s"]))
+        
+            for (waypoint1, waypoint2) in waypoint_distances.keys():
+                out_file.write("\n" +
+                               "\t".join([waypoint1,
+                                          waypoint2,
+                                          str(waypoint_distances[frozenset([waypoint1, waypoint2])]),
+                                          str(waypoint_durations[frozenset([waypoint1, waypoint2])])]))
+
+
+    #optimal_route = run_genetic_algorithm(generations=100, population_size=100)
+    print "Search for optimal route"
+    optimal_route = run_genetic_algorithm(generations=thisRunGenerations, population_size=thisRunPopulation_size)
+
+    #this is probably redundant now that the files are created in run_genetic_algorithm but leaving it active to ensure 
+    #the final result is not lost
+    CreateOptimalRouteHtmlFile(optimal_route, 1)
 
