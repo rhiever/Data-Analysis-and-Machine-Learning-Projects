@@ -4,6 +4,7 @@ Randy Olson's Shortest Route Program modified By Andrew Liesinger to:
     2: Dynamically create and open an HTML file showing the route when a shorter route is found
     3: Make it easier to tinker with the Generation / Population parameters
 """
+from __future__ import print_function
 from itertools import combinations
 import googlemaps
 import pandas as pd
@@ -76,7 +77,7 @@ all_waypoints = ["USS Alabama, Battleship Parkway, Mobile, AL",
                  "Taliesin, County Road C, Spring Green, Wisconsin",
                  "Yellowstone National Park, WY 82190"]
 
-def CreateOptimalRouteHtmlFile(optimal_route, distance, display=1):
+def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
     optimal_route = list(optimal_route)
     optimal_route += [optimal_route[0]]
 
@@ -195,7 +196,7 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=1):
         fs.write(Page_2)
     
     #Show the result
-    if display ==1:
+    if display:
         webbrowser.open_new_tab(localoutput_file)
 
 
@@ -281,7 +282,7 @@ def run_genetic_algorithm(generations=5000, population_size=100):
     """
         The core of the Genetic Algorithm.
     """
-    current_best_distance =-1
+    current_best_distance = -1
     
     # Create a random population of `population_size` number of solutions.
     population = generate_random_population(population_size)
@@ -312,7 +313,7 @@ def run_genetic_algorithm(generations=5000, population_size=100):
                 #if this is the first route found, or it is shorter than the best route we know, create a html output and display it
                 if population_fitness[agent_genome] < current_best_distance or current_best_distance < 0:
                     current_best_distance = population_fitness[agent_genome]
-                    CreateOptimalRouteHtmlFile(agent_genome,current_best_distance, 1)
+                    CreateOptimalRouteHtmlFile(agent_genome, current_best_distance, False)
                     
 
             # Create 1 exact copy of each of the top 10 road trips
@@ -336,10 +337,10 @@ def run_genetic_algorithm(generations=5000, population_size=100):
 
 if __name__ == '__main__':
     # if this file exists, read the data stored in it - if not then collect data by asking google
-    print "Begin finding shortest route"
+    print("Begin finding shortest route")
     file_path = waypoints_file
     if os.path.exists(file_path):
-        print "Waypoints exist"
+        print("Waypoints exist")
         #file exists used saved results
         waypoint_distances = {}
         waypoint_durations = {}
@@ -354,7 +355,7 @@ if __name__ == '__main__':
 
     else:
         #file does not exist - compute results       
-        print "Collecting Waypoints"
+        print("Collecting Waypoints")
         waypoint_distances = {}
         waypoint_durations = {}
 
@@ -381,8 +382,8 @@ if __name__ == '__main__':
             except Exception as e:
                 print("Error with finding the route between %s and %s." % (waypoint1, waypoint2))
         
-        print "Saving Waypoints"
-        with open(waypoints_file, "wb") as out_file:
+        print("Saving Waypoints")
+        with open(waypoints_file, "w") as out_file:
             out_file.write("\t".join(["waypoint1",
                                       "waypoint2",
                                       "distance_m",
@@ -397,10 +398,9 @@ if __name__ == '__main__':
 
 
     #optimal_route = run_genetic_algorithm(generations=100, population_size=100)
-    print "Search for optimal route"
+    print("Search for optimal route")
     optimal_route = run_genetic_algorithm(generations=thisRunGenerations, population_size=thisRunPopulation_size)
 
     #this is probably redundant now that the files are created in run_genetic_algorithm but leaving it active to ensure 
     #the final result is not lost
-    CreateOptimalRouteHtmlFile(optimal_route, 1)
-
+    CreateOptimalRouteHtmlFile(optimal_route, 1, True)
