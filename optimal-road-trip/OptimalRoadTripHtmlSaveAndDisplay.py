@@ -188,14 +188,12 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
     </html>
     """
 
-    #write the output to file    
     localoutput_file = output_file.replace('.html', '_' + str(distance) + '.html')
     with open(localoutput_file, 'w') as fs:
         fs.write(Page_1)
         fs.write("\t\t\toptimal_route = {0}".format(str(optimal_route)))
         fs.write(Page_2)
-    
-    #Show the result
+
     if display:
         webbrowser.open_new_tab(localoutput_file)
 
@@ -281,8 +279,13 @@ def generate_random_population(pop_size):
 def run_genetic_algorithm(generations=5000, population_size=100):
     """
         The core of the Genetic Algorithm.
+        
+        `generations` and `population_size` must be a multiple of 10.
     """
+    
     current_best_distance = -1
+    population_subset_size = int(population_size / 10.)
+    generations_10pct = int(generations / 10.)
     
     # Create a random population of `population_size` number of solutions.
     population = generate_random_population(population_size)
@@ -299,10 +302,11 @@ def run_genetic_algorithm(generations=5000, population_size=100):
 
             population_fitness[agent_genome] = compute_fitness(agent_genome)
 
-        # Take the 10 shortest road trips and produce 10 offspring each from them
+        # Take the top 10% shortest road trips and produce offspring each from them
         new_population = []
-        for rank, agent_genome in enumerate(sorted(population_fitness, key=population_fitness.get)[:10]):
-            if (generation % 1000 == 0 or generation == generations - 1) and rank == 0:
+        for rank, agent_genome in enumerate(sorted(population_fitness,
+                                                   key=population_fitness.get)[:population_subset_size]):
+            if (generation % generations_10pct == 0 or generation == generations - 1) and rank == 0:
                 current_best_genome = agent_genome
                 print("Generation %d best: %d | Unique genomes: %d" % (generation,
                                                                        population_fitness[agent_genome],
@@ -310,13 +314,14 @@ def run_genetic_algorithm(generations=5000, population_size=100):
                 print(agent_genome)                
                 print("")
 
-                #if this is the first route found, or it is shorter than the best route we know, create a html output and display it
+                # If this is the first route found, or it is shorter than the best route we know,
+                # create a html output and display it
                 if population_fitness[agent_genome] < current_best_distance or current_best_distance < 0:
                     current_best_distance = population_fitness[agent_genome]
                     CreateOptimalRouteHtmlFile(agent_genome, current_best_distance, False)
                     
 
-            # Create 1 exact copy of each of the top 10 road trips
+            # Create 1 exact copy of each of the top road trips
             new_population.append(agent_genome)
 
             # Create 2 offspring with 1-3 point mutations
@@ -336,7 +341,7 @@ def run_genetic_algorithm(generations=5000, population_size=100):
 
 
 if __name__ == '__main__':
-    # if this file exists, read the data stored in it - if not then collect data by asking google
+    # If this file exists, read the data stored in it - if not then collect data by asking google
     print("Begin finding shortest route")
     file_path = waypoints_file
     if os.path.exists(file_path):
@@ -354,7 +359,7 @@ if __name__ == '__main__':
             all_waypoints.update([row.waypoint1, row.waypoint2])
 
     else:
-        #file does not exist - compute results       
+        # File does not exist - compute results       
         print("Collecting Waypoints")
         waypoint_distances = {}
         waypoint_durations = {}
@@ -396,11 +401,9 @@ if __name__ == '__main__':
                                           str(waypoint_distances[frozenset([waypoint1, waypoint2])]),
                                           str(waypoint_durations[frozenset([waypoint1, waypoint2])])]))
 
-
-    #optimal_route = run_genetic_algorithm(generations=100, population_size=100)
     print("Search for optimal route")
     optimal_route = run_genetic_algorithm(generations=thisRunGenerations, population_size=thisRunPopulation_size)
 
-    #this is probably redundant now that the files are created in run_genetic_algorithm but leaving it active to ensure 
-    #the final result is not lost
+    # This is probably redundant now that the files are created in run_genetic_algorithm,
+    # but leaving it active to ensure  the final result is not lost
     CreateOptimalRouteHtmlFile(optimal_route, 1, True)
