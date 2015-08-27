@@ -149,7 +149,7 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
                   waypoints: waypts,
                   optimizeWaypoints: false,
                   travelMode: google.maps.TravelMode.DRIVING,
-                  durationInTraffic : true
+                  durationInTraffic : false // Set to true to see duration with traffic
               };
 
               directionsService.route(request, function(response, status) {
@@ -158,11 +158,11 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
 
                     // Total up the distance and duration of each leg.
                     var legs = response.routes[0].legs;
-                    for(var i=0; i<legs.length; ++i) {
+                    for (var i = 0; i < legs.length; i++) {
                       distance += legs[i].distance.value;
                       duration += legs[i].duration.value;
                     }
-                    document.getElementById('distance').innerHTML = " Distance: " + (distance) + " km";
+                    document.getElementById('distance').innerHTML = "Distance: " + (distance) + " km";
                     document.getElementById('duration').innerHTML = "Duration: " + (duration/60/60/24) + " days";    
                 }
               });
