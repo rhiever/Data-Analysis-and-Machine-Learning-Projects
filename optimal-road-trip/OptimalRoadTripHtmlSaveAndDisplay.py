@@ -113,9 +113,10 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
             var routes_list = [];
             var distance = 0.0;
             var duration = 0.0;
+            var showTraffic = false; // Set to true to see duration with traffic
             var markerOptions = {icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"};
             var directionsDisplayOptions = {preserveViewport: true,
-                                            durationInTraffic : true,
+                                            durationInTraffic : showTraffic, 
                                             markerOptions: markerOptions};
             var directionsService = new google.maps.DirectionsService();
             var map;
@@ -149,7 +150,7 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
                   waypoints: waypts,
                   optimizeWaypoints: false,
                   travelMode: google.maps.TravelMode.DRIVING,
-                  durationInTraffic : false // Set to true to see duration with traffic
+                  durationInTraffic : showTraffic
               };
 
               directionsService.route(request, function(response, status) {
