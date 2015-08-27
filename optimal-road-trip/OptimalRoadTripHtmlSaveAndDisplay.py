@@ -172,7 +172,7 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
 
             function createRoutes(route) {
                 // Google's free map API is limited to 10 waypoints so need to break into batches
-                //route.push(route[0]);
+                route.push(route[0]);
                 var subset = 0;
                 while (subset < route.length) {
                     var waypointSubset = route.slice(subset, subset + 10);
