@@ -80,8 +80,7 @@ p
                             int(record_min_temp) > min(int(actual_min_temp), int(average_min_temp)) or
                             ((record_precipitation is not None or average_precipitation is not None) and (float(actual_precipitation) > float(record_precipitation) or
                             float(average_precipitation) > float(record_precipitation)))):
-                        #raise Exception
-                        print("exception")
+                        raise Exception
 
                     out_file.write('{}-{}-{},'.format(current_date.year, current_date.month, current_date.day))
                     out_file.write(','.join([actual_mean_temp, actual_min_temp, actual_max_temp,
