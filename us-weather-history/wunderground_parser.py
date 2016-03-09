@@ -66,19 +66,22 @@ p
                     if actual_precipitation == 'T':
                         actual_precipitation = '0.0' 
 
-                    #Test whether station collets average or record precipitation data
+                    #Test whether station collects average or record precipitation data
                     if weather_data[4][1]:
                         average_precipitation = weather_data[4][1].text
-                    else: average_precipitation = None
+                    else: 
+                        average_precipitation = None
                     if weather_data[4][2]:
                         record_precipitation = weather_data[4][2].text
-                    else: record_precipitation = None
+                    else: 
+                        record_precipitation = None
 
                     # Verify that the parsed data is valid
                     if (record_max_temp_year == '-1' or record_min_temp_year == '-1' or
                             int(record_max_temp) < max(int(actual_max_temp), int(average_max_temp)) or
                             int(record_min_temp) > min(int(actual_min_temp), int(average_min_temp)) or
-                            ((record_precipitation is not None or average_precipitation is not None) and (float(actual_precipitation) > float(record_precipitation) or
+                            ((record_precipitation is not None or average_precipitation is not None) and 
+                            (float(actual_precipitation) > float(record_precipitation) or
                             float(average_precipitation) > float(record_precipitation)))):
                         #raise Exception
                         print("exception")
@@ -101,10 +104,6 @@ p
                     # If the web page is formatted improperly, signal that the page may need
                     # to be downloaded again.
                     try_again = True
-                    
-                    '''#Used to produce a mock-up .csv for KSAF
-                    print("skipped", current_date)
-                    current_date += timedelta(days=1)'''
 
             # If the web page needs to be downloaded again, re-download it from
             # wunderground.com
