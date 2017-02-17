@@ -110,15 +110,19 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
         </style>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
         <script>
-            var routes_list = []
+            var routes_list = [];
+            var distance = 0.0;
+            var duration = 0.0;
+            var showTraffic = false; // Set to true to see duration with traffic
             var markerOptions = {icon: "http://maps.gstatic.com/mapfiles/markers2/marker.png"};
             var directionsDisplayOptions = {preserveViewport: true,
+                                            durationInTraffic : showTraffic, 
                                             markerOptions: markerOptions};
             var directionsService = new google.maps.DirectionsService();
             var map;
 
             function initialize() {
-              var center = new google.maps.LatLng(39, -96);
+              var center = new google.maps.LatLng(39, -96); // Use 53,9 for Europe
               var mapOptions = {
                 zoom: 5,
                 center: center
@@ -145,12 +149,22 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
                   destination: end,
                   waypoints: waypts,
                   optimizeWaypoints: false,
-                  travelMode: google.maps.TravelMode.DRIVING
+                  travelMode: google.maps.TravelMode.DRIVING,
+                  durationInTraffic : showTraffic
               };
 
               directionsService.route(request, function(response, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
-                    directionsDisplay.setDirections(response);      
+                    directionsDisplay.setDirections(response);
+
+                    // Total up the distance and duration of each leg.
+                    var legs = response.routes[0].legs;
+                    for (var i = 0; i < legs.length; i++) {
+                      distance += legs[i].distance.value;
+                      duration += legs[i].duration.value;
+                    }
+                    document.getElementById('distance').innerHTML = "Distance: " + (distance) + " km";
+                    document.getElementById('duration').innerHTML = "Duration: " + (duration/60/60/24) + " days";    
                 }
               });
 
@@ -183,7 +197,9 @@ def CreateOptimalRouteHtmlFile(optimal_route, distance, display=True):
         </script>
       </head>
       <body>
-        <div id="map-canvas"></div>
+        <div id="map-canvas" style="width: 100%; height: 90%;"></div>
+        <div id="duration">Duration: </div> 
+        <div id="distance">Distance: </div>
       </body>
     </html>
     """
