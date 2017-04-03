@@ -16,9 +16,9 @@ If you don't have the necessary software installed to run IPython Notebook, don'
 
 For example, if you want to view the notebook in the `wheres-waldo-path-optimization` directory, copy the [full link](https://github.com/rhiever/Data-Analysis-and-Machine-Learning-Projects/blob/master/wheres-waldo-path-optimization/Where's%20Waldo%20path%20optimization.ipynb) to the notebook then paste it into [nbviewer](http://nbviewer.ipython.org/github/rhiever/Data-Analysis-and-Machine-Learning-Projects/blob/master/wheres-waldo-path-optimization/Where%27s%20Waldo%20path%20optimization.ipynb).
 
-##License
+## License
 
-###Instructional Material
+### Instructional Material
 
 All instructional material in this repository is made available under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/). The following is a human-readable summary of (and not a substitute for) the [full legal text of the CC BY 4.0 license](https://creativecommons.org/licenses/by/4.0/legalcode).
 
@@ -42,7 +42,7 @@ Under the following terms:
 * You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable exception or limitation.
 * No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as publicity, privacy, or moral rights may limit how you use the material.
 
-###Software
+### Software
 
 Except where otherwise noted, the example programs and other software provided in this repository are made available under the [OSI](http://opensource.org/)-approved [MIT license](http://opensource.org/licenses/mit-license.html).
 
