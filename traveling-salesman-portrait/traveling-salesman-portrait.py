@@ -1,7 +1,7 @@
 '''
-This is a script written by Randal S. Olson (randalolson.com) for the Traveling Salesman Project.
+This is a script written by Randal S. Olson (randalolson.com) for the Traveling Salesman Portrait project.
 
-More information on the project can be fon my blog:
+More information on the project can be found on my blog:
 
 http://www.randalolson.com/2018/04/11/traveling-salesman-portrait-in-python/
 
