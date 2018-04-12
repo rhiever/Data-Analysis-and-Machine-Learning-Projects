@@ -1,9 +1,13 @@
 '''
 This is a script written by Randal S. Olson (randalolson.com) for the Traveling Salesman Project.
 
-More information on the project can be found here:  http://www.randalolson.com/2018/04/11/traveling-salesman-portrait-in-python/
+More information on the project can be fon my blog:
 
-Please check my project repository for information on how this script can be used and shared: https://github.com/rhiever/Data-Analysis-and-Machine-Learning-Projects
+http://www.randalolson.com/2018/04/11/traveling-salesman-portrait-in-python/
+
+Please check my project repository for information on how this script can be used and shared:
+
+https://github.com/rhiever/Data-Analysis-and-Machine-Learning-Projects
 '''
 
 import os
