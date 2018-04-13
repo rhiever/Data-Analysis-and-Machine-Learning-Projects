@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import urllib.request
 from PIL import Image
-from itertools import combinations
 from tsp_solver.greedy_numpy import solve_tsp
+from scipy.spatial.distance import pdist, squareform
 
 image_url = 'http://ereaderbackgrounds.com/movies/bw/Frankenstein.jpg'
 image_path = 'Frankenstein.jpg'
@@ -32,26 +32,8 @@ bw_image_array = np.array(bw_image, dtype=np.int)
 black_indices = np.argwhere(bw_image_array == 0)
 chosen_black_indices = black_indices[np.random.choice(black_indices.shape[0], replace=False, size=10000)]
 
-distance_lookup = {}
-
-for (p1, p2) in combinations(range(len(chosen_black_indices)), r=2):
-    p1 = tuple(chosen_black_indices[p1])
-    p2 = tuple(chosen_black_indices[p2])
-    x1, y1 = p1
-    x2, y2 = p2
-    distance_lookup[(p1, p2)] = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-    
-distance_matrix = []
-for row_num in range(0, len(chosen_black_indices)):
-    row_list = []
-    for col_num in range(0, row_num):
-        p1 = tuple(chosen_black_indices[row_num])
-        p2 = tuple(chosen_black_indices[col_num])
-        if (p1, p2) in distance_lookup:
-            row_list.append(distance_lookup[p1, p2])
-        else:
-            row_list.append(distance_lookup[p2, p1])
-    distance_matrix.append(row_list)
+distances = pdist(chosen_black_indices)
+distance_matrix = squareform(distances)
 
 optimized_path = solve_tsp(distance_matrix)
 
