@@ -33,8 +33,7 @@ OAUTH_SECRET = ''
 CONSUMER_KEY = ''
 CONSUMER_SECRET = ''
 
-twitter_connection = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET,
-                                                                       CONSUMER_KEY, CONSUMER_SECRET))
+twitter_connection = Twitter(auth=OAuth(OAUTH_TOKEN, OAUTH_SECRET, CONSUMER_KEY, CONSUMER_SECRET))
 
 pbar = tqdm()
 pbar.write('Collecting list of Twitter followers for @{}'.format(USER_TO_ANALYZE))
