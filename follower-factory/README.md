@@ -33,7 +33,7 @@ CONSUMER_SECRET = ''
 
 Once you've created the Twitter app account as described under the Dependencies section, you should be able to find the OAUTH and CONSUMER keys on the "Key and Access Tokens" section, as shown in the image below.
 
-<img src='images/twitter-app.example.png' />
+<img src='images/twitter-app-example.png' />
 
 Once you've filled out those 5 variables, run the script on your command line:
 
