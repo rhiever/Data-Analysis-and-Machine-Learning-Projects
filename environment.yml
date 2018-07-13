@@ -8,3 +8,6 @@ dependencies:
   - matplotlib
   - seaborn
   - watermark
+  - tqdm
+  - joblib
+  - tpot
