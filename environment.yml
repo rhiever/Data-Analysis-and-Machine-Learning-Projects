@@ -11,3 +11,5 @@ dependencies:
   - tqdm
   - joblib
   - tpot
+  - pip:
+    - twitter
