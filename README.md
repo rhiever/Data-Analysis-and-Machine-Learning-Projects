@@ -4,7 +4,7 @@
 
 # Randy Olson's data analysis and machine learning projects
 
-© 2016 Randal S. Olson
+© 2016-2018 Randal S. Olson
 
 This is a repository of teaching materials, code, and data for my data analysis and machine learning projects.
 
