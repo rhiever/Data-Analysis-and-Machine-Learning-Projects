@@ -13,3 +13,4 @@ dependencies:
   - tpot
   - pip:
     - twitter
+    - googlemaps
