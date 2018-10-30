@@ -18,16 +18,7 @@ For example, if you want to view the notebook in the `wheres-waldo-path-optimiza
 
 ## License
 
-### Instructional Material
 
-All instructional material in this repository is made available under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/). The following is a human-readable summary of (and not a substitute for) the [full legal text of the CC BY 4.0 license](https://creativecommons.org/licenses/by/4.0/legalcode).
-
-You are free to:
-
-* **Share**—copy and redistribute the material in any medium or format
-* **Adapt**—remix, transform, and build upon the material
-
-for any purpose, even commercially.
 
 The licensor cannot revoke these freedoms as long as you follow the license terms.
 
