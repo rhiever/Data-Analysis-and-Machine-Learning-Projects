@@ -19,7 +19,7 @@ from PIL import Image
 from tsp_solver.greedy_numpy import solve_tsp
 from scipy.spatial.distance import pdist, squareform
 
-image_url = 'http://ereaderbackgrounds.com/movies/bw/Frankenstein.jpg'
+image_url = 'http://www.randalolson.com/wp-content/uploads/Frankenstein.jpg'
 image_path = 'Frankenstein.jpg'
 
 if not os.path.exists(image_path):
